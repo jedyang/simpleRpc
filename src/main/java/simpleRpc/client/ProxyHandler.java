@@ -10,11 +10,9 @@ import java.util.UUID;
 public class ProxyHandler implements InvocationHandler {
 
 
-    private String serverAddress;
     private ServiceDiscovery serviceDiscovery;
 
-    public ProxyHandler(String serverAddress, ServiceDiscovery serviceDiscovery) {
-        this.serverAddress = serverAddress;
+    public ProxyHandler(ServiceDiscovery serviceDiscovery) {
         this.serviceDiscovery = serviceDiscovery;
     }
 
@@ -28,7 +26,7 @@ public class ProxyHandler implements InvocationHandler {
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
 
-        // 发现服务
+        // 发现服务提供方地址
         String serverAddress = serviceDiscovery.discovery();
 
         String[] array = serverAddress.split(":");

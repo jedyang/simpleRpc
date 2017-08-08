@@ -17,7 +17,7 @@
     </bean>
 
     <bean id="rpcServiceProxy" class="simpleRpc.client.RpcServiceProxy">
-        <constructor-arg name="serverAddress" value="${server.address}"></constructor-arg>
+        <!--<constructor-arg name="serverAddress" value="${server.address}"></constructor-arg>-->
         <constructor-arg name="serviceDiscovery" ref="serviceDiscovery"></constructor-arg>
     </bean>
 

@@ -68,6 +68,11 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
             LOGGER.info("server started............");
 
             // 注册服务，data就是服务器的地址
+            // 集群部署时，每个应用实例将自己的ip注册到节点的data中
+            // 这里只是演示用了127.0.0.1
+            // 可以通过命令查看
+            // [zk: localhost:2181(CONNECTED) 5] get /registry/data0000000019
+            // 127.0.0.1:8000
             if (null != registryAddress) {
                 registryAddress.register(serverAddress);
             }

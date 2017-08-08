@@ -90,8 +90,12 @@ public class RegistryService {
 
             byte[] bytes = data.getBytes();
             // 数据节点建的是瞬态顺序节点
+            // 这里我们每次都创建名为data的节点，
+            // 但是znode是有版本的（version），每个znode中存储的数据可以有多个版本，
+            // 也就是一个访问路径中可以存储多份数据，version号自动增加。
+            // 会看到data后面跟着一个递增的版本
             String path = zk.create(Const.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
-            logger.debug("create zookeeper node ({} => {})", path, data);
+            logger.info("create zookeeper node ({} => {})", path, data);
         } catch (KeeperException e) {
             logger.error("", e);
         } catch (InterruptedException ex) {

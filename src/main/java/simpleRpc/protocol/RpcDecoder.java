@@ -21,6 +21,8 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
+        LOGGER.info("======decode");
+
         if (in.readableBytes() < Const.headerLen) {
             LOGGER.error("the input message too short:{}", in.readableBytes());
             return;

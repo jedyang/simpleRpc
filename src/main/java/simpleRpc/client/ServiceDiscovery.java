@@ -37,6 +37,7 @@ public class ServiceDiscovery {
     public String discovery() {
         String data = null;
         int size = dataList.size();
+        LOGGER.info("service discover : {}", dataList);
         if (size > 0) {
             if (size == 1) {
                 data = dataList.get(0);
@@ -70,6 +71,8 @@ public class ServiceDiscovery {
         return zooKeeper;
     }
 
+    // 监听根目录下所有node
+    // 遍历node，获取其中的数据，即服务提供方的地址
     private void watchNode(final ZooKeeper zk) {
         try {
             List<String> zkChildren = zk.getChildren(Const.ZK_REGISTRY_PATH, new Watcher() {
@@ -85,7 +88,7 @@ public class ServiceDiscovery {
                 byte[] bytes = zk.getData(Const.ZK_REGISTRY_PATH + "/" + node, false, null);
                 dataList.add(new String(bytes));
             }
-            LOGGER.debug("node data: {}", dataList);
+            LOGGER.info("node data: {}", dataList);
             this.dataList = dataList;
         } catch (KeeperException e) {
             LOGGER.error("watch node err:", e);
