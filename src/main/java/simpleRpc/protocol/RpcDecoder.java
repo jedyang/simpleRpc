@@ -23,7 +23,7 @@ public class RpcDecoder extends ByteToMessageDecoder {
         LOGGER.info("======decode one time======:");
 
         if (in.readableBytes() < Const.headerLen) {
-            LOGGER.error("the input message too short:{}", in.readableBytes());
+//            LOGGER.error("the input message too short:{}", in.readableBytes());
             return;
         }
 

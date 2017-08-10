@@ -91,11 +91,11 @@ public class RegistryService {
             byte[] bytes = data.getBytes();
             // 数据节点建的是瞬态顺序节点
             // 但是znode是有版本的（version），每个znode中存储的数据可以有多个版本，
-            // 也就是一个访问路径中可以存储多份数据，version号自动增加。
+            // 也就是一个访问路径中可以存储多份数据，version号自动增加。如果这里选EPHEMERAL_SEQUENTIAL，创建的node会带着版本号
             // 节点路径名是服务方法名
             // 节点里的数据是提供该方法的server地址
             String nodePath = Const.ZK_REGISTRY_PATH + "/" + serviceName;
-            String path = zk.create(nodePath, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+            String path = zk.create(nodePath, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
             logger.info("create zookeeper node ({} => {})", path, data);
         } catch (KeeperException e) {
             logger.error("", e);
