@@ -12,8 +12,11 @@ public class ProxyHandler implements InvocationHandler {
 
     private ServiceDiscovery serviceDiscovery;
 
-    public ProxyHandler(ServiceDiscovery serviceDiscovery) {
+    private String version;
+
+    public ProxyHandler(ServiceDiscovery serviceDiscovery, String version) {
         this.serviceDiscovery = serviceDiscovery;
+        this.version = version;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -25,8 +28,9 @@ public class ProxyHandler implements InvocationHandler {
         request.setMethodName(method.getName());
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
-
+        request.setVersion(version);
         // 发现服务提供方地址
+        String service = request.getClassName() + ":" + version;
         String serverAddress = serviceDiscovery.discovery();
 
         String[] array = serverAddress.split(":");

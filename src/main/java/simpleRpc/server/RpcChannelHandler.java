@@ -43,6 +43,7 @@ public class RpcChannelHandler extends SimpleChannelInboundHandler<RpcRequest> {
             response.setError(e.getMessage());
         }
 
+        // 写入RPC响应，并自动关闭连接
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
@@ -53,11 +54,10 @@ public class RpcChannelHandler extends SimpleChannelInboundHandler<RpcRequest> {
      * @return
      */
     private Object handle(RpcRequest request) throws Exception {
-        String className = request.getClassName();
-
-        LOGGER.info("className: " + className);
+        String serviceName = request.getClassName() + ":" + request.getVersion();
+        LOGGER.info("serviceName : {}", serviceName);
         LOGGER.info("handlerMap : {}", handlerMap);
-        Object obj = handlerMap.get(className);
+        Object obj = handlerMap.get(serviceName);
         LOGGER.info("obj : {}", obj);
 
         String methodName = request.getMethodName();

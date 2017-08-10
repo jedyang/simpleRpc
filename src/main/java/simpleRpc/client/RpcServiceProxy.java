@@ -10,11 +10,11 @@ public class RpcServiceProxy {
         this.serviceDiscovery = serviceDiscovery;
     }
 
-    public <T> T create(Class interfaceClass){
+    public <T> T create(Class interfaceClass, String version){
         return (T) Proxy.newProxyInstance(
                 interfaceClass.getClassLoader(),
                 new Class[]{interfaceClass},
-                new ProxyHandler(serviceDiscovery)
+                new ProxyHandler(serviceDiscovery, version)
         );
     }
 }

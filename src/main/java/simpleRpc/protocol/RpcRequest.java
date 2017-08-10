@@ -4,15 +4,25 @@ import java.util.Arrays;
 
 /**
  * 组装一次服务的参数
+ *
  * @author yunsheng
  */
 public class RpcRequest {
 
     private String requestId;
     private String className;
+    private String version;
     private String methodName;
     private Class<?>[] parameterTypes;
     private Object[] parameters;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public String getRequestId() {
         return requestId;
@@ -59,6 +69,7 @@ public class RpcRequest {
         return "RpcRequest{" +
                 "requestId='" + requestId + '\'' +
                 ", className='" + className + '\'' +
+                ", version='" + version + '\'' +
                 ", methodName='" + methodName + '\'' +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +
                 ", parameters=" + Arrays.toString(parameters) +

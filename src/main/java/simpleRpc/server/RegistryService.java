@@ -1,6 +1,6 @@
 package simpleRpc.server;
 
-import SimpleRpc.Const;
+import simpleRpc.Const;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -26,11 +26,11 @@ public class RegistryService {
      *
      * @param data
      */
-    public void register(String data) {
+    public void register(String serviceName, String data) {
         if (data != null) {
             ZooKeeper zk = connectZK();
             if (zk != null) {
-                createDataNode(zk, data);
+                createDataNode(zk, serviceName, data);
             } else {
                 logger.error("connectZK failed!!");
             }
@@ -75,11 +75,11 @@ public class RegistryService {
 
     /**
      * 创建节点
-     *
-     * @param zk
+     *  @param zk
+     * @param serviceName
      * @param data
      */
-    private void createDataNode(ZooKeeper zk, String data) {
+    private void createDataNode(ZooKeeper zk, String serviceName, String data) {
         try {
             // 检查节点是否存在，false表示不需要监听这个node
             // 返回的是节点状态，null表示不存在
@@ -90,11 +90,12 @@ public class RegistryService {
 
             byte[] bytes = data.getBytes();
             // 数据节点建的是瞬态顺序节点
-            // 这里我们每次都创建名为data的节点，
             // 但是znode是有版本的（version），每个znode中存储的数据可以有多个版本，
             // 也就是一个访问路径中可以存储多份数据，version号自动增加。
-            // 会看到data后面跟着一个递增的版本
-            String path = zk.create(Const.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+            // 节点路径名是服务方法名
+            // 节点里的数据是提供该方法的server地址
+            String nodePath = Const.ZK_REGISTRY_PATH + "/" + serviceName;
+            String path = zk.create(nodePath, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
             logger.info("create zookeeper node ({} => {})", path, data);
         } catch (KeeperException e) {
             logger.error("", e);

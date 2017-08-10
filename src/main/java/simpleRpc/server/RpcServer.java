@@ -50,9 +50,9 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
 
                             socketChannel.pipeline()
-                                    .addLast(new RpcDecoder(RpcRequest.class)) // 对请求就行解码
-                                    .addLast(new RpcEncoder(RpcResponse.class)) // 对响应进行编码
-                                    .addLast(new RpcChannelHandler(exportServices));          // 处理Rpc请求
+                                    .addLast(new RpcDecoder(RpcRequest.class)) // 对请求就行解码 in
+                                    .addLast(new RpcEncoder(RpcResponse.class)) // 对响应进行编码 out
+                                    .addLast(new RpcChannelHandler(exportServices));          // 处理Rpc请求 in
 
 
                         }
@@ -73,8 +73,10 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
             // 可以通过命令查看
             // [zk: localhost:2181(CONNECTED) 5] get /registry/data0000000019
             // 127.0.0.1:8000
-            if (null != registryAddress) {
-                registryAddress.register(serverAddress);
+            for (String interfaceName : exportServices.keySet()) {
+                if (null != registryAddress) {
+                    registryAddress.register(interfaceName, serverAddress);
+                }
             }
 
             channelFuture.channel().closeFuture().sync();
@@ -95,9 +97,12 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(RpcService.class);
         if (MapUtils.isNotEmpty(beans)) {
             for (Object obj : beans.values()) {
-                String interfaceName = obj.getClass().getAnnotation(RpcService.class).value().getName();
-                exportServices.put(interfaceName, obj);
-                LOGGER.info("put {} in exportServices", interfaceName);
+                RpcService rpcService = obj.getClass().getAnnotation(RpcService.class);
+                String interfaceName = rpcService.value().getName();
+                String version = rpcService.version();
+                String serviceName = interfaceName + ":" + version;
+                exportServices.put(serviceName, obj);
+                LOGGER.info("put {} in exportServices", serviceName);
             }
         }
     }

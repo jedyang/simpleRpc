@@ -13,4 +13,7 @@ import java.lang.annotation.*;
 public @interface RpcService {
     // 用来指定实现的接口
     Class<?> value();
+
+    // 指定服务版本
+    String version() default "";
 }

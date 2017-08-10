@@ -1,6 +1,6 @@
 package simpleRpc.client;
 
-import SimpleRpc.Const;
+import simpleRpc.Const;
 import io.netty.util.internal.ThreadLocalRandom;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;

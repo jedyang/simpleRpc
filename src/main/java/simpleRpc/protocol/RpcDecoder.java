@@ -1,17 +1,16 @@
 package simpleRpc.protocol;
 
-import SimpleRpc.Const;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import simpleRpc.server.RpcServer;
+import simpleRpc.Const;
 
 import java.util.List;
 
 public class RpcDecoder extends ByteToMessageDecoder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RpcDecoder.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(RpcDecoder.class);
 
     private Class targetClass;
 
@@ -21,7 +20,7 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
-        LOGGER.info("======decode");
+        LOGGER.info("======decode one time======:");
 
         if (in.readableBytes() < Const.headerLen) {
             LOGGER.error("the input message too short:{}", in.readableBytes());
