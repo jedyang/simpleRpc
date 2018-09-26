@@ -43,7 +43,7 @@ public class RegistryService {
         ZooKeeper zk = null;
         try {
             // 连接zookeeper
-            zk = new ZooKeeper(Const.registryAddress, Const.ZK_SESSION_TIMEOUT, new Watcher() {
+            zk = new ZooKeeper(registryAddress, Const.ZK_SESSION_TIMEOUT, new Watcher() {
                 // 事件通知处理器
                 public void process(WatchedEvent watchedEvent) {
                     // 连接状态

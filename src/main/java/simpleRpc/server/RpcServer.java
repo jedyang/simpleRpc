@@ -27,11 +27,11 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
     private String serverAddress;
-    private RegistryService registryAddress;
+    private RegistryService registryService;
 
-    public RpcServer(String serverAddress, RegistryService registryAddress) {
+    public RpcServer(String serverAddress, RegistryService registryService) {
         this.serverAddress = serverAddress;
-        this.registryAddress = registryAddress;
+        this.registryService = registryService;
     }
 
     private Map<String, Object> exportServices = new HashMap<String, Object>();
@@ -74,8 +74,8 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
             // [zk: localhost:2181(CONNECTED) 5] get /registry/data0000000019
             // 127.0.0.1:8000
             for (String interfaceName : exportServices.keySet()) {
-                if (null != registryAddress) {
-                    registryAddress.register(interfaceName, serverAddress);
+                if (null != registryService) {
+                    registryService.register(interfaceName, serverAddress);
                 }
             }
 

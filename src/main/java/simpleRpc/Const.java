@@ -6,7 +6,7 @@ package simpleRpc;
  */
 
 public interface Const {
-    String registryAddress = "127.0.0.1:2181";
+//    String registryAddress = "127.0.0.1:2181";
 
     int ZK_SESSION_TIMEOUT = 5000;
     String ZK_REGISTRY_PATH = "/registry";

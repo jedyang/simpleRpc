@@ -24,7 +24,7 @@ public class RpcChannelHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     /**
      * 收到消息时该方法会被触发
-     * 注意：netty5这个方法会改名
+     * 注意：netty5这个方法会改名为messageReceived
      *
      * @param ctx
      * @param request

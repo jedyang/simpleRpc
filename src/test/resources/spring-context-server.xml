@@ -19,7 +19,7 @@
     <!-- 配置 RPC 服务器 -->
     <bean id="rpcServer" class="simpleRpc.server.RpcServer">
         <constructor-arg name="serverAddress" value="${server.address}"/>
-        <constructor-arg name="registryAddress" ref="registryService"/>
+        <constructor-arg name="registryService" ref="registryService"/>
     </bean>
 
 
